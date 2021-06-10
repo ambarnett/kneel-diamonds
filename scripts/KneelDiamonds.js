@@ -1,19 +1,24 @@
-
-import { addCustomOrder } from "./database.js"
+import { addCustomOrder, checkOrderState } from "./database.js"
 import { DiamondSizes } from "./DiamondSizes.js"
 import { JewelryStyles } from "./JewelryStyles.js"
 import { Metals } from "./Metals.js"
 import { orders } from "./Orders.js"
+import { typesOfJewelry } from "./jewelryType.js"
 
 document.addEventListener(
     "click",
     (event) => {
-       const clickedItem = event.target
-       if (clickedItem.id === "orderButton") {
-           addCustomOrder()
-       }
+       if(event.target.id === "orderButton"){
+            if (checkOrderState()) {
+                addCustomOrder()
+            } else {
+                window.alert("please select from all options before placing order.")
+            }
+        }
     }
 )
+
+document.addEventListener("showOrderBtn", () => document.querySelector(".orderButton").classList.remove("isHidden"))
 
 export const KneelDiamonds = () => {
     return `
@@ -35,7 +40,10 @@ export const KneelDiamonds = () => {
         </article>
 
         <article>
-            <button id="orderButton">Create Custom Order</button>
+            <section class="choices__types options">
+            ${typesOfJewelry()}
+            </section>
+            <button class="orderButton isHidden" id="orderButton">Create Custom Order</button>
         </article>
 
         <article class="customOrders">

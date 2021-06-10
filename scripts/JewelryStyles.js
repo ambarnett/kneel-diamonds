@@ -1,4 +1,5 @@
-import { getStyles, setStyle } from "./database.js"
+import { checkOrderState, getStyles, setStyle } from "./database.js"
+import { dispatchOrderBtnEvent } from "./orderBtnEvent.js"
 
 const styles = getStyles()
 
@@ -7,6 +8,9 @@ document.addEventListener(
     (event) => {
         if (event.target.name === "style") {
             setStyle(parseInt(event.target.value))
+            if(checkOrderState()){
+                dispatchOrderBtnEvent()
+            }
         }
     }
 )
