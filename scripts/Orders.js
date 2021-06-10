@@ -1,10 +1,11 @@
-import { getMetals, getOrders, getSizes, getStyles } from "./database.js"
+import { getJewelryTypes, getMetals, getOrders, getSizes, getStyles } from "./database.js"
 
 const buildOrderListItem = (order) => {
     
     const metals = getMetals()
     const sizes = getSizes()
     const styles = getStyles()
+    const jewelry = getJewelryTypes()
 
     //remember that the function you pass to find() must return true/false
     const foundMetal = metals.find(
@@ -12,21 +13,29 @@ const buildOrderListItem = (order) => {
             return metal.id === order.metalId
         }
     )
-    let totalCost = foundMetal.price
-
     const foundSize = sizes.find(
         (size) => {
             return size.id === order.sizeId
         }
     )
-    totalCost = foundSize.price
-
     const foundStyle = styles.find(
         (style) => {
             return style.id === order.styleId
         }
     )
-    totalCost = foundStyle.price
+    const foundJewelry = jewelry.find(
+        (jewel) => {
+            return jewel.id === order.jewelryTypeId
+        }
+    )
+    let totalCost = foundStyle.price + foundMetal.price + foundSize.price
+    if(foundJewelry.id === 1) {
+        totalCost = totalCost * 1
+    } else if (foundJewelry.id === 2) {
+        totalCost = totalCost * 2
+    } else if (foundJewelry.id === 3){
+        totalCost = totalCost * 4
+    }
 
     const costString = totalCost.toLocaleString("en-US", {
         style: "currency",
@@ -36,10 +45,6 @@ const buildOrderListItem = (order) => {
     return `<li>
         Order #${order.id} cost ${costString}
     </li>`
-
-    // return `<li>
-    //     Order #${order.id} was placed on ${order.timestamp}
-    // </li>`
 }
 
 export const orders = () => {

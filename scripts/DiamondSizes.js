@@ -1,4 +1,5 @@
-import { getSizes, setSize } from "./database.js"
+import { checkOrderState, getSizes, setSize } from "./database.js"
+import { dispatchOrderBtnEvent } from "./orderBtnEvent.js"
 
 const sizes = getSizes()
 
@@ -7,6 +8,9 @@ document.addEventListener(
     (event) => {
         if (event.target.name === "size") {
             setSize(parseInt(event.target.value))
+            if (checkOrderState()){
+                dispatchOrderBtnEvent()
+            }
         }
     }
 )
