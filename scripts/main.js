@@ -10,7 +10,7 @@ renderAllHTML()
 
 document.addEventListener(
     "stateChanged", 
-    event => {
+    (event) => {
         console.log("State of data has changed. Regenerating HTML...")
         renderAllHTML()
     }
